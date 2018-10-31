@@ -9,7 +9,7 @@
         <Numbers @number-clicked="handleNumberClick"/>
         <Operators @operator-clicked="handleOperatorClick">
         </Operators>
-        <Equals @equals-clicked="handleEqualsClick"></Equals>  
+        <Equals @equals-clicked="handleEqualsClick" @delete-clicked="handleDeleteClick"></Equals>  
       </div>
     </div>
   </div>
@@ -28,22 +28,59 @@ export default {
   },
   data() {
     return {
-      firstNumber: null,
+      firstNumber: "",
       newNumber: "",
     }
   },
 
   methods: {
     handleNumberClick(passedNumber = {}) {
+      this.firstNumber += passedNumber.number;
       this.newNumber += passedNumber.number;
     },
+
+
     handleOperatorClick(passedOperator = {}) {
-      console.log('TCL: handleOperatorClick -> passedOperator', passedOperator);
-      console.log('operator clicked');
+      const operator = passedOperator.split("--")[1];
+      if(operator == "plus") {
+        this.newNumber += " + ";
+        this.firstNumber += " + ";
+      } else if (operator == "minus") {
+        this.newNumber += " - "
+        this.firstNumber += " - ";
+      } else if (operator == "times") {
+        this.newNumber += " x ";
+        this.firstNumber += " x ";
+      } else if (operator == "divide") {
+        this.newNumber += " / "
+        this.firstNumber += " / ";
+      } else if (operator == "sqrt") {
+        console.log("no functionality for this yet");
+      } else if (operator == "quadratic-power") {
+        console.log("no functionality for this yet");
+      } else if (operator == "power") {
+        console.log("no functionality for this yet");
+      } else if (operator == "decimal-logarithmus") {
+        console.log("no functionality for this yet");
+      }
     },
+
+
+    handleDeleteClick(passedDelete) {
+      const operator = passedDelete.split("--")[1];
+      if(operator == "delete-current") {
+        this.newNumber = "";
+      } else if (operator == "delete-all") {
+        this.newNumber = "";
+        this.firstNumber = "";
+      }
+    },
+
+
     handleEqualsClick() {
+      console.log(this.firstNumber);
       console.log("equals was clicked");
-    }
+    },
   },
 }
 </script>
@@ -80,6 +117,8 @@ export default {
       display: flex;
       justify-content: flex-end;
       align-items:flex-end;
+      border: solid 5px #008000b4;
+      overflow: hidden;
 
       &--result {
         padding: 20px;
