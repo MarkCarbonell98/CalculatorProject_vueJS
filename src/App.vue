@@ -49,8 +49,8 @@ export default {
         this.newNumber += " - "
         this.firstNumber += " - ";
       } else if (operator == "times") {
-        this.newNumber += " x ";
-        this.firstNumber += " x ";
+        this.newNumber += " * ";
+        this.firstNumber += " * ";
       } else if (operator == "divide") {
         this.newNumber += " / "
         this.firstNumber += " / ";
@@ -69,7 +69,7 @@ export default {
     handleDeleteClick(passedDelete) {
       const operator = passedDelete.split("--")[1];
       if(operator == "delete-current") {
-        this.newNumber = "";
+        this.newNumber = this.newNumber.slice(0, this.newNumber.length -1);
       } else if (operator == "delete-all") {
         this.newNumber = "";
         this.firstNumber = "";
@@ -78,8 +78,48 @@ export default {
 
 
     handleEqualsClick() {
-      console.log(this.firstNumber);
-      console.log("equals was clicked");
+      const equationUnspaced = this.firstNumber.replace(/\s/g, "");
+      const numbers = equationUnspaced.split(/[+/*-]/g).filter(c => c == "" ? false : true).map(c => parseInt(c));
+      const signs = equationUnspaced.split(/[\d]/g).filter(c => c == "" ? false : true);
+      const equation = [equationUnspaced].join(',');
+      console.log(signs, numbers, equation);
+      let result = "";
+
+
+
+      // for(let number of numbers) {
+      //   for(let sign of signs) {
+      //     if(sign == "-") {
+      //       result += "-";
+      //     } else if(sign == "+") {
+      //       result += "+";        
+      //     }
+      //   }
+      //   result += number;
+      //   result = parseInt(result);
+      //   console.log(result);
+      // }
+      this.newNumber = eval(this.firstNumber);
+      try {
+        this.newNumber = eval(this.newNumber);
+        this.firstNumber = this.newNumber;
+        if(this.newNumber == Infinity || this.newNumber == -Infinity) {
+          this.newNumber = "Math Error";
+        }
+      } catch (err) {
+        if(err instanceof SyntaxError) {
+          this.firstNumber = "";
+          this.newNumber = "Syntax Error";
+        }
+      }
+    },
+
+    cleanInput() {
+      const equationUnspaced = this.firstNumber.replace(/\s/g, "");
+      const numbers = equationUnspaced.split(/[+/*-]/g).filter(c => c == "" ? false : true);
+      const signs = equationUnspaced.split(/[\d]/g).filter(c => c == "" ? false : true);
+      console.log(signs, numbers);
+      console.log(eval("log(1000)"));
     },
   },
 }
