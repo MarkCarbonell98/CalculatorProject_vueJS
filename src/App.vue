@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <h1>Hellou</h1>
+    <h1 class="title">Hellou</h1>
     <div class="calculator__container">
       <div class="calculator">
         <div class="calculator__screen">
-          <span class="calculator__screen--result">{{this.newNumber}}</span>
+          <span class="calculator__screen--result">{{this.firstNumber}}</span>
         </div>
         <Numbers @number-clicked="handleNumberClick"/>
         <Operators @operator-clicked="handleOperatorClick">
@@ -30,13 +30,14 @@ export default {
     return {
       firstNumber: "",
       newNumber: "",
+      result: "",
     }
   },
 
   methods: {
     handleNumberClick(passedNumber = {}) {
       this.firstNumber += passedNumber.number;
-      this.newNumber += passedNumber.number;
+      this.newNumber = this.firstNumber;
     },
 
 
@@ -46,7 +47,7 @@ export default {
         this.newNumber += " + ";
         this.firstNumber += " + ";
       } else if (operator == "minus") {
-        this.newNumber += " - "
+        this.newNumber += " - ";
         this.firstNumber += " - ";
       } else if (operator == "times") {
         this.newNumber += " * ";
@@ -134,11 +135,13 @@ export default {
   }
 
   .calculator {
-    background-color: #11c8ee;
+    background:  #11c8ee;
     width: 100%;
     height: 100%;
     border-radius: 3px;
     padding-bottom: 20px;
+    box-shadow: 6px 8px 8px 4px #0bb5e6;
+    border: 4px solid rgba(1, 247, 255, 0.159);
 
     &__container {
       padding: 20px;
